@@ -14,6 +14,7 @@ class User(AbstractUser):
     hire_data = models.DateTimeField(auto_now_add=True)
     office = models.CharField(max_length=255, verbose_name='Офис', null=True, blank=True)
     phone = models.CharField(max_length=255, verbose_name='Номер телефона', null=True, blank=True)
+    first_name = models.CharField(max_length=255, verbose_name='Имя', null=True, blank=True)
     surname = models.CharField(max_length=255, verbose_name='Фамилия', null=True, blank=True)
     last_name = models.CharField(max_length=255, verbose_name='Отчество', null=True, blank=True)
     job_title = models.CharField(max_length=255, default='Стажер', verbose_name='Должность', null=True, blank=True)
