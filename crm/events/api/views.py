@@ -12,14 +12,21 @@ class EventModelViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        return Event.objects.filter(reflective=user)
+        qs = self.queryset
+        if not self.request.user.is_superuser:
+            qs = qs.filter(reflective=user)
+        return qs
 
 
 class EventRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = EventModelSerializer
     permission_classes = (IsAuthenticated, )
     lookup_field = 'id'
+    queryset = Event.objects.all()
 
     def get_queryset(self):
         user = self.request.user
-        return Event.objects.filter(client__manager=user)
+        qs = self.queryset
+        if not self.request.user.is_superuser:
+            qs = qs.filter(client__manager=user)
+        return qs

@@ -4,20 +4,20 @@ from accounts.models import User
 
 class Lead(models.Model):
     VIP = 'vip'
-    FUCK_OFF = 'FUCK OFF'
-    ALL_AGREE = 'На все согласен'
-    POTENTIAL = 'Потенциальный'
-    BnD = 'БнД'
-    BIRSHA_WORK = 'Биржа труда'
-    FSSP = 'ФССП'
-    BANKRUPT = 'Банкрот'
+    FUCK_OFF = 'fuck_off'
+    ALL_AGREE = 'all_agree'
+    POTENTIAL = 'potential'
+    BND = 'bnd'
+    BIRSHA_WORK = 'birsha_work'
+    FSSP = 'fssp'
+    BANKRUPT = 'bankrupt'
 
     CHOICES_STATUS = (
         (VIP, 'vip'),
         (FUCK_OFF, 'FUCK OFF'),
         (ALL_AGREE, 'На все согласен'),
         (POTENTIAL, 'Потенциальный'),
-        (BnD, 'БнД'),
+        (BND, 'БнД'),
         (BIRSHA_WORK, 'Биржа труда'),
         (FSSP, 'ФССП'),
         (BANKRUPT, 'Банкрот'),
