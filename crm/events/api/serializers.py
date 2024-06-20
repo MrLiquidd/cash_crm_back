@@ -7,7 +7,6 @@ from leads.models import Lead
 
 class EventModelSerializer(serializers.ModelSerializer):
     client = UserModelSerializer(read_only=True)
-    office = serializers.CharField(source='client.office', read_only=True)
     reflective = UserModelSerializer(read_only=True)
 
     def validate(self, attrs):
