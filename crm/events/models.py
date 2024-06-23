@@ -5,25 +5,25 @@ from leads.models import Lead
 
 
 class Event(models.Model):
-    REGISTRATION = 'registration'
-    CALL = 'call'
-    CONSULTATION = 'consultation'
-    LESSON = 'lesson'
-    PRACTICE = 'practice'
-    INTERNSHIP = 'internship'
-    END_INTERNSHIP = 'end_internship'
-    MASTER_CLASS = 'master_class'
-    QUESTION_CHECK = 'question_check'
-    SCHOOL_OF_TRADE = 'school_of_trade'
-    LAST_PRACTICE = 'last_practice'
-    OPEN_CHECK = 'open_check'
-    ADD_CHECK = 'add_check'
-    EVENT = 'event'
+    REGISTRATION = 'Регистрация'
+    CALL = 'Звонок'
+    CONSULTATION = 'Консультация'
+    LESSON = 'Лекция'
+    PRACTICE = 'Практика'
+    INTERNSHIP = 'Стажировка'
+    END_INTERNSHIP = 'Конец стажировки'
+    MASTER_CLASS = 'Мастер класс'
+    QUESTION_CHECK = 'Вопрос о счете'
+    SCHOOL_OF_TRADE = 'Школа трейда'
+    LAST_PRACTICE = 'Последняя практика'
+    OPEN_CHECK = 'Открытие счета'
+    ADD_CHECK = 'Пополнение счета'
+    EVENT = 'Встреча'
 
-    PLANNED = 'planned'
-    PROCESSED = 'processed'
-    COMPLETE = 'complete'
-    FAILED = 'failed'
+    PLANNED = 'Запланировано'
+    PROCESSED = 'Обработано'
+    COMPLETE = 'Выполнено'
+    FAILED = 'Просрочено'
 
     CHOICES_TYPE = (
         (REGISTRATION, 'Регистрация'),
