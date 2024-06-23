@@ -21,15 +21,13 @@ class TopicCategory(models.Model):
 
     theme = models.CharField(max_length=255, verbose_name='Тема')
     status = models.CharField(max_length=50, choices=CHOICES_STATUS, verbose_name='Статус')
-    reflective = models.ForeignKey(
-        User, related_name='reflective_topic', on_delete=models.CASCADE, verbose_name='Ответственный'
-    )
     personal_access = models.ManyToManyField(User, verbose_name='Персональный доступ у пользователя')
     open_topic = models.DateTimeField(auto_now_add=True, verbose_name='Дата и время открытия топика')
     deadline = models.DateTimeField(verbose_name='Крайний срок', blank=True, null=True)
     author = models.ForeignKey(
         User, related_name='author_topic', on_delete=models.CASCADE, verbose_name='Автор'
     )
+    description = models.TextField(null=True, blank=True, verbose_name='Описание')
 
     def __str__(self):
         return self.theme

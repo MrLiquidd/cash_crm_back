@@ -9,12 +9,13 @@ class EventModelSerializer(serializers.ModelSerializer):
     client = UserModelSerializer(read_only=True)
     reflective = UserModelSerializer(read_only=True)
 
-    def validate(self, attrs):
-        user = self.context.get("request").user
-        lead_ids = Lead.objects.filter(manager=user).values_list('id', flat=True)
-        client = attrs.validated_data.get('client')
-        if not (client and client.id in lead_ids):
-            raise serializers.ValidationError("Вы не можете создать событие для этого клиента.")
+    # def validate(self, attrs):
+    #     user = self.context.get("request").user
+    #     lead_ids = Lead.objects.filter(manager=user).values_list('id', flat=True)
+    #     client = attrs.validated_data.get('client')
+    #     if not (client and client.id in lead_ids):
+    #         raise serializers.ValidationError("Вы не можете создать событие для этого клиента.")
+    #     return attrs
 
     class Meta:
         model = Event

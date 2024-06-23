@@ -21,7 +21,7 @@ class UserModelSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_full_name(obj: User) -> str:
-        return obj.full_name
+        return f"{obj}"
 
     class Meta:
         model = User

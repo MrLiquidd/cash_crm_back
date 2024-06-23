@@ -27,7 +27,7 @@ class Lead(models.Model):
     office = models.CharField(max_length=255)
     email = models.EmailField(verbose_name='Электронная почта')
     phone = models.CharField(max_length=255, verbose_name='Номер телефона')
-    status = models.CharField(max_length=50, choices=CHOICES_STATUS, null=True, verbose_name='Статус')
+    status = models.CharField(max_length=50, choices=CHOICES_STATUS, null=True, blank=True, verbose_name='Статус')
     manager = models.ForeignKey(
         User, related_name='leads', on_delete=models.CASCADE, verbose_name='Менеджер'
     )

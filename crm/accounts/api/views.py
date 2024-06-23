@@ -22,6 +22,7 @@ class UserModelViewSet(mixins.RetrieveModelMixin,
         responses={status.HTTP_201_CREATED: registration_serializer_class},
         description="Регистрация пользователя"
     )
+
     @action(detail=False, methods=('post', ), url_path='signup', permission_classes=(AllowAny, ))
     def signup(self, request):
         serializer = self.registration_serializer_class(data=request.data)

@@ -5,17 +5,23 @@ from events.models import Event
 
 
 class EventModelViewSet(viewsets.ModelViewSet):
-    serializer_class = EventModelSerializer
     permission_classes = (IsAuthenticated, )
-    filterset_fields = ('is_active', )
+    serializer_class = EventModelSerializer
     queryset = Event.objects.all()
+    filterset_fields = ('is_active', )
 
     def get_queryset(self):
-        user = self.request.user
         qs = self.queryset
         if not self.request.user.is_superuser:
-            qs = qs.filter(reflective=user)
+            qs = qs.filter(reflective=self.request.user)
         return qs
+
+    def perform_create(self, serializer):
+        reflective = self.request.data.get('reflective', None)
+        if reflective:
+            serializer.save(reflective=reflective)
+        else:
+            serializer.save(manager=self.request.user)
 
 
 class EventRetrieveAPIView(generics.RetrieveAPIView):
