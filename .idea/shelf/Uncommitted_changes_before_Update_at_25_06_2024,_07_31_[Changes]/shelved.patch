@@ -1,0 +1,110 @@
+Index: crm/topics/api/views.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from rest_framework import permissions, viewsets\nfrom topics.api.serializers import TopicCategoryModelSerializer\nfrom topics.models import TopicCategory\n\n\nclass TopicCategoryModelViewSet(viewsets.ModelViewSet):\n    queryset = TopicCategory.objects.all()\n    serializer_class = TopicCategoryModelSerializer\n    permission_classes = [permissions.IsAuthenticated]\n\n    def get_queryset(self):\n        return TopicCategory.objects.filter(personal_access=self.request.user)\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/crm/topics/api/views.py b/crm/topics/api/views.py
+--- a/crm/topics/api/views.py	(revision 69743381368583567d7750bf35e942bb93fb52df)
++++ b/crm/topics/api/views.py	(date 1719286300218)
+@@ -10,3 +10,4 @@
+ 
+     def get_queryset(self):
+         return TopicCategory.objects.filter(personal_access=self.request.user)
++
+Index: crm/leads/api/views.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from rest_framework import viewsets\nfrom rest_framework.permissions import IsAuthenticated\nfrom leads.api.serializers import LeadModelSerializer\nfrom leads.models import Lead\n\n\nclass LeadsModelViewSet(viewsets.ModelViewSet):\n    permission_classes = (IsAuthenticated, )\n    serializer_class = LeadModelSerializer\n    queryset = Lead.objects.all()\n    filterset_fields = ('is_active', )\n\n    def get_queryset(self):\n        qs = self.queryset\n        if not self.request.user.is_superuser:\n            qs = qs.filter(manager=self.request.user)\n        return qs\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/crm/leads/api/views.py b/crm/leads/api/views.py
+--- a/crm/leads/api/views.py	(revision 69743381368583567d7750bf35e942bb93fb52df)
++++ b/crm/leads/api/views.py	(date 1719286300220)
+@@ -15,3 +15,12 @@
+         if not self.request.user.is_superuser:
+             qs = qs.filter(manager=self.request.user)
+         return qs
++
++    def perform_create(self, serializer):
++        # Получаем переданного менеджера, если он указан
++        manager_id = self.request.data.get('manager', None)
++        if manager_id:
++            serializer.save(manager_id=manager_id)
++        else:
++            # Или автоматически назначаем текущего пользователя в качестве менеджера
++            serializer.save(manager=self.request.user)
+Index: crm/accounts/api/serializers.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from django.contrib.auth.password_validation import validate_password\nfrom rest_framework import serializers\nfrom rest_framework.validators import UniqueValidator\nfrom accounts.models import User\n\n\nUSER_READ_ONLY_FIELDS = ('id', 'last_login', 'date_joined', 'is_staff', 'is_superuser', 'is_active')\n\n\nclass UserModelSerializer(serializers.ModelSerializer):\n    email = serializers.EmailField(\n        required=False,\n        validators=[UniqueValidator(queryset=User.objects.all())],\n        label='Электронная почта'\n    )\n    username = serializers.CharField(required=False, label='Никнейм')\n    last_name = serializers.CharField(write_only=True, required=False, label='Отчество')\n    first_name = serializers.CharField(write_only=True, required=False, label='Имя')\n    surname = serializers.CharField(write_only=True, required=False, label='Фамилия')\n    full_name = serializers.SerializerMethodField(label='ФИО')\n\n    @staticmethod\n    def get_full_name(obj: User) -> str:\n        return obj.full_name\n\n    class Meta:\n        model = User\n        exclude = ('groups', 'user_permissions', 'password')\n        read_only_fields = USER_READ_ONLY_FIELDS\n\n\nclass UserModelRegistrationSerializer(UserModelSerializer):\n    email = serializers.EmailField(\n        required=True,\n        validators=[UniqueValidator(queryset=User.objects.all())],\n        label='Электронная почта'\n    )\n    password = serializers.CharField(\n        write_only=True, required=True, validators=[validate_password], label='Пароль'\n    )\n    password2 = serializers.CharField(write_only=True, required=True, label='Подтверждение пароля')\n\n    def validate(self, attrs):\n        if attrs.get('password', None) != attrs.pop('password2', None):\n            raise serializers.ValidationError({\"password\": \"Passwords do not match.\"})\n        return attrs\n\n    def create(self, validated_data):\n        email = validated_data.pop('email')\n        password = validated_data.pop('password')\n        user = User(email=email, username=email, **validated_data)\n        user.set_password(password)\n        user.save()\n        return user\n\n    class Meta:\n        model = User\n        exclude = ('groups', 'user_permissions',)\n        read_only_fields = USER_READ_ONLY_FIELDS\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/crm/accounts/api/serializers.py b/crm/accounts/api/serializers.py
+--- a/crm/accounts/api/serializers.py	(revision 69743381368583567d7750bf35e942bb93fb52df)
++++ b/crm/accounts/api/serializers.py	(date 1719284642383)
+@@ -30,17 +30,20 @@
+ 
+ 
+ class UserModelRegistrationSerializer(UserModelSerializer):
++    print("Registration registration")
+     email = serializers.EmailField(
+         required=True,
+         validators=[UniqueValidator(queryset=User.objects.all())],
+         label='Электронная почта'
+     )
++
+     password = serializers.CharField(
+-        write_only=True, required=True, validators=[validate_password], label='Пароль'
++        write_only=True, required=True, label='Пароль'
+     )
+     password2 = serializers.CharField(write_only=True, required=True, label='Подтверждение пароля')
+ 
+     def validate(self, attrs):
++        print(attrs)
+         if attrs.get('password', None) != attrs.pop('password2', None):
+             raise serializers.ValidationError({"password": "Passwords do not match."})
+         return attrs
+Index: crm/accounts/api/urls.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from django.urls import path, include\nfrom rest_framework import routers\nfrom rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView\n\nfrom accounts.api.views import UserModelViewSet\n\naccounts = routers.DefaultRouter()\naccounts.register(r'accounts', UserModelViewSet)\n\nurlpatterns = [\n    path('', include(accounts.urls)),\n    # JWT auth\n    path('accounts/login', TokenObtainPairView.as_view(), name='token_obtain'),\n    path('accounts/refresh', TokenRefreshView.as_view(), name='token_refresh'),\n    path('accounts/verify', TokenVerifyView.as_view(), name='token_verify'),\n]\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/crm/accounts/api/urls.py b/crm/accounts/api/urls.py
+--- a/crm/accounts/api/urls.py	(revision 69743381368583567d7750bf35e942bb93fb52df)
++++ b/crm/accounts/api/urls.py	(date 1719283772924)
+@@ -9,7 +9,6 @@
+ 
+ urlpatterns = [
+     path('', include(accounts.urls)),
+-    # JWT auth
+     path('accounts/login', TokenObtainPairView.as_view(), name='token_obtain'),
+     path('accounts/refresh', TokenRefreshView.as_view(), name='token_refresh'),
+     path('accounts/verify', TokenVerifyView.as_view(), name='token_verify'),
+Index: crm/accounts/api/views.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from drf_spectacular.utils import extend_schema\nfrom rest_framework import mixins, status\nfrom rest_framework.decorators import action\nfrom rest_framework.permissions import AllowAny\nfrom rest_framework.response import Response\nfrom rest_framework.viewsets import GenericViewSet\nfrom accounts.models import User\nfrom accounts.api.serializers import UserModelSerializer, UserModelRegistrationSerializer\n\n\nclass UserModelViewSet(mixins.RetrieveModelMixin,\n                       mixins.UpdateModelMixin,\n                       mixins.ListModelMixin,\n                       GenericViewSet):\n    serializer_class = UserModelSerializer\n    queryset = User.objects.all()\n    registration_serializer_class = UserModelRegistrationSerializer\n\n    @extend_schema(\n        methods=('post', ),\n        request=registration_serializer_class,\n        responses={status.HTTP_201_CREATED: registration_serializer_class},\n        description=\"Регистрация пользователя\"\n    )\n    @action(detail=False, methods=('post', ), url_path='signup', permission_classes=(AllowAny, ))\n    def signup(self, request):\n        serializer = self.registration_serializer_class(data=request.data)\n        if serializer.is_valid(raise_exception=True):\n            serializer.save()\n        return Response(data=serializer.data)\n\n    @action(detail=False, methods=('get', 'patch', 'put'), url_path='me')\n    def me(self, request):\n        serializer = self.serializer_class(instance=request.user, data=request.data)\n        if serializer.is_valid(raise_exception=True) and request.method.lower() in ('put', 'patch'):\n            serializer.save()\n        return Response(data=serializer.data)\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/crm/accounts/api/views.py b/crm/accounts/api/views.py
+--- a/crm/accounts/api/views.py	(revision 69743381368583567d7750bf35e942bb93fb52df)
++++ b/crm/accounts/api/views.py	(date 1719284675231)
+@@ -25,8 +25,10 @@
+     @action(detail=False, methods=('post', ), url_path='signup', permission_classes=(AllowAny, ))
+     def signup(self, request):
+         serializer = self.registration_serializer_class(data=request.data)
+-        if serializer.is_valid(raise_exception=True):
++        if serializer.is_valid():
+             serializer.save()
++        else:
++            print(serializer.errors)
+         return Response(data=serializer.data)
+ 
+     @action(detail=False, methods=('get', 'patch', 'put'), url_path='me')
