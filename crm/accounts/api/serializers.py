@@ -1,8 +1,7 @@
-from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from accounts.models import User
-
+from office.api.serializer import OfficeModelSerializer
 
 USER_READ_ONLY_FIELDS = ('id', 'last_login', 'date_joined', 'is_staff', 'is_superuser', 'is_active')
 
@@ -18,6 +17,7 @@ class UserModelSerializer(serializers.ModelSerializer):
     first_name = serializers.CharField(write_only=True, required=False, label='Имя')
     surname = serializers.CharField(write_only=True, required=False, label='Фамилия')
     full_name = serializers.SerializerMethodField(label='ФИО')
+    office = OfficeModelSerializer(read_only=True)
 
     @staticmethod
     def get_full_name(obj: User) -> str:
@@ -35,10 +35,12 @@ class UserModelRegistrationSerializer(UserModelSerializer):
         validators=[UniqueValidator(queryset=User.objects.all())],
         label='Электронная почта'
     )
+
     password = serializers.CharField(
-        write_only=True, required=True, validators=[validate_password], label='Пароль'
+        write_only=True, required=True, label='Пароль'
     )
     password2 = serializers.CharField(write_only=True, required=True, label='Подтверждение пароля')
+    office = OfficeModelSerializer(read_only=True)
 
     def validate(self, attrs):
         if attrs.get('password', None) != attrs.pop('password2', None):
@@ -48,7 +50,7 @@ class UserModelRegistrationSerializer(UserModelSerializer):
     def create(self, validated_data):
         email = validated_data.pop('email')
         password = validated_data.pop('password')
-        user = User(email=email, username=email, **validated_data)
+        user = User(email=email, username=email,  **validated_data)
         user.set_password(password)
         user.save()
         return user

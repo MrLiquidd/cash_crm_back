@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'swagger',
     'events',
     'topics',
+    'office',
 ]
 
 MIDDLEWARE = [

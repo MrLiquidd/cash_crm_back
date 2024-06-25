@@ -2,7 +2,7 @@ from django.db import models
 from accounts.models import User
 
 
-class TopicCategory(models.Model):
+class Topic(models.Model):
     not_ready = 'Не начато'
     im_work = 'В работе'
     attention = 'Требует внимания'

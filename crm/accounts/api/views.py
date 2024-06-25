@@ -17,17 +17,18 @@ class UserModelViewSet(mixins.RetrieveModelMixin,
     registration_serializer_class = UserModelRegistrationSerializer
 
     @extend_schema(
-        methods=('post', ),
+        methods=('post',),
         request=registration_serializer_class,
         responses={status.HTTP_201_CREATED: registration_serializer_class},
         description="Регистрация пользователя"
     )
-
-    @action(detail=False, methods=('post', ), url_path='signup', permission_classes=(AllowAny, ))
+    @action(detail=False, methods=('post',), url_path='signup', permission_classes=(AllowAny,))
     def signup(self, request):
         serializer = self.registration_serializer_class(data=request.data)
-        if serializer.is_valid(raise_exception=True):
+        if serializer.is_valid():
             serializer.save()
+        else:
+            print(serializer.errors)
         return Response(data=serializer.data)
 
     @action(detail=False, methods=('get', 'patch', 'put'), url_path='me')
