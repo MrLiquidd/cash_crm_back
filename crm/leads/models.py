@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import User
+from office.models import Office
 
 
 class Lead(models.Model):
@@ -24,7 +25,11 @@ class Lead(models.Model):
     )
 
     name = models.CharField(max_length=255)
-    office = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=55)
+    surname = models.CharField(max_length=55)
+    last_name = models.CharField(max_length=55)
+    gender = models.CharField(max_length=10)
+    office = models.ForeignKey(Office, related_name='lead_office', on_delete=models.CASCADE)
     email = models.EmailField(verbose_name='Электронная почта')
     phone = models.CharField(max_length=255, verbose_name='Номер телефона')
     status = models.CharField(max_length=50, choices=CHOICES_STATUS, null=True, blank=True, verbose_name='Статус')
@@ -34,6 +39,7 @@ class Lead(models.Model):
     is_active = models.BooleanField(default=True, verbose_name='Активность')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата и время создания')
     modified_at = models.DateTimeField(auto_now=True, verbose_name='Дата и время изменения')
+
 
     def __str__(self):
         return self.name

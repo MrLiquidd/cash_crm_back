@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 from leads.managers import CustomUserManager
+from office.models import Office
 
 
 class User(AbstractUser):
@@ -12,7 +13,7 @@ class User(AbstractUser):
     term_work = models.DateTimeField(auto_now_add=True)
     passport = models.CharField(max_length=55, verbose_name='Паспорт', null=True, blank=True)
     hire_data = models.DateTimeField(auto_now_add=True)
-    office = models.CharField(max_length=255, verbose_name='Офис', null=True, blank=True)
+    office = models.ForeignKey(Office, related_name='user_office', default=1, on_delete=models.CASCADE)
     phone = models.CharField(max_length=255, verbose_name='Номер телефона', null=True, blank=True)
     first_name = models.CharField(max_length=255, verbose_name='Имя', null=True, blank=True)
     surname = models.CharField(max_length=255, verbose_name='Фамилия', null=True, blank=True)

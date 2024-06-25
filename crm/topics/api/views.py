@@ -1,18 +1,18 @@
 from rest_framework import permissions, viewsets
-from topics.api.serializers import TopicCategoryModelSerializer
-from topics.models import TopicCategory
+from topics.api.serializers import TopicModelSerializer
+from topics.models import Topic
 
 
-class TopicCategoryModelViewSet(viewsets.ModelViewSet):
-    queryset = TopicCategory.objects.all()
-    serializer_class = TopicCategoryModelSerializer
+class TopicModelViewSet(viewsets.ModelViewSet):
+    queryset = Topic.objects.all()
+    serializer_class = TopicModelSerializer
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
-        return TopicCategory.objects.filter(personal_access=self.request.user)
+        qs = self.queryset
+        return qs.filter()
 
     def perform_create(self, serializer):
-        # Получаем переданного менеджера, если он указан
         manager_id = self.request.data.get('author', None)
         if manager_id:
             serializer.save(author_id=manager_id)

@@ -1,9 +1,11 @@
 from django.urls import path, include
 from rest_framework import routers
-from events.api.views import EventModelViewSet, ActiveEventModelViewSetClient, UnActiveEventModelViewSetClient
+from events.api.views import EventModelViewSet, ActiveEventModelViewSetClient, UnActiveEventModelViewSetClient, \
+    EventCommentViewSet
 
 event_router = routers.DefaultRouter()
 event_router.register('events', EventModelViewSet)
+event_router.register(r'event-comments', EventCommentViewSet)
 
 urlpatterns = [
     path('', include(event_router.urls)),

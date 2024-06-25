@@ -9,7 +9,6 @@ accounts.register(r'accounts', UserModelViewSet)
 
 urlpatterns = [
     path('', include(accounts.urls)),
-    # JWT auth
     path('accounts/login', TokenObtainPairView.as_view(), name='token_obtain'),
     path('accounts/refresh', TokenRefreshView.as_view(), name='token_refresh'),
     path('accounts/verify', TokenVerifyView.as_view(), name='token_verify'),

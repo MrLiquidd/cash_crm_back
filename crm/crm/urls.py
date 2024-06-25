@@ -9,4 +9,5 @@ urlpatterns = [
     path('api/', include('leads.api.urls')),
     path('api/', include('events.api.urls')),
     path('api/', include('topics.api.urls')),
+    path('api/', include('office.api.urls')),
 ]
