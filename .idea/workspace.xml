@@ -4,18 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="36472b87-5d1f-48e5-973b-0cd7d7bb2da1" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/crm-django.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/crm/lead/api.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/crm/lead/forms.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/crm/lead/serializers.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/crm/lead/urls.py" afterDir="false" />
-    </list>
+    <list default="true" id="36472b87-5d1f-48e5-973b-0cd7d7bb2da1" name="Changes" comment="add app and model office, add new model comment" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,6 +19,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectColorInfo">{
@@ -43,16 +37,17 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "DefaultHtmlFileTemplate": "HTML File",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;final&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/crm/office/api" />
       <recent name="$PROJECT_DIR$/crm/website/static/styles" />
       <recent name="$PROJECT_DIR$/crm/website/static" />
       <recent name="$PROJECT_DIR$/crm/website/static/js" />
@@ -75,6 +70,19 @@
       <option name="presentableId" value="Default" />
       <updated>1716041009769</updated>
     </task>
+    <task id="LOCAL-00001" summary="add app and model office, add new model comment">
+      <option name="closed" value="true" />
+      <created>1719330843784</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1719330843784</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="add app and model office, add new model comment" />
+    <option name="LAST_COMMIT_MESSAGE" value="add app and model office, add new model comment" />
   </component>
 </project>
